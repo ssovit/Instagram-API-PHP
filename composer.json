@@ -1,0 +1,36 @@
+{
+	"name": "ssovit/instagram-api",
+	"description": "Unofficial Instagram API for PHP",
+	"license": "MIT",
+	"homepage": "https://github.com/ssovit/Instagram-API-PHP",
+	"keywords": [
+		"instagram",
+		"instagram-api",
+		"instagram-scraper"
+	],
+	"authors": [
+
+		{
+			"name": "Sovit Tamrakar",
+			"email": "sovit.tamrakar@gmail.com",
+			"homepage": "https://github.com/ssovit/",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"source": "https://github.com/ssovit/Instagram-API-PHP",
+		"issues": "https://github.com/ssovit/Instagram-API-PHP/issues",
+		"email": "sovit.tamrakar@gmail.com"
+	},
+	"autoload": {
+		"psr-4": {
+			"Sovit\\": "lib"
+		}
+	},
+	"require": {
+	},
+	"type": "library",
+	"archive": {
+		"exclude": ["/example", "/.github"]
+	}
+}
