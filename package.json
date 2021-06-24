@@ -1,6 +1,6 @@
 {
   "name": "@ssovit/instagram-api-php",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Unofficial Instagram API for PHP",
   "main": "index.js",
   "directories": {

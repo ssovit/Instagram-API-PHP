@@ -14,7 +14,7 @@ if (!\class_exists('\Sovit\Instagram\Stream')) {
 
         public function __construct($config = [])
         {
-            $this->config = array_merge(['cookie_file' => sys_get_temp_dir().DIRECTORY_SEPARATOR . 'instagram.txt', 'user-agent' => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"], $config);
+            $this->config = array_merge(['cookie-file' => sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'instagram.txt', 'user-agent' => "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.75 Safari/537.36"], $config);
         }
 
         public function bodyCallback($ch, $data)
@@ -38,7 +38,7 @@ if (!\class_exists('\Sovit\Instagram\Stream')) {
                 }
             } else {
 
-                $forward = ['content-type', 'content-length', 'accept-ranges', 'content-range'];
+                $forward = ['content-type', 'content-length', 'accept-ranges', 'content-range','cache-control','cross-origin-resource-policy'];
 
                 $parts = explode(':', $data, 2);
 
@@ -53,30 +53,24 @@ if (!\class_exists('\Sovit\Instagram\Stream')) {
         public function stream($url)
         {
             $ch = curl_init();
-
-            $headers   = [];
-            curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
-            curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
-
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
-            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-
-            curl_setopt($ch, CURLOPT_BUFFERSIZE, $this->buffer_size);
-            curl_setopt($ch, CURLOPT_URL, $url);
-
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 0);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-            curl_setopt($ch, CURLOPT_USERAGENT, $this->config['user-agent']);
-            curl_setopt($ch, CURLOPT_REFERER, "https://www.instagram.com");
-            curl_setopt($ch, CURLOPT_COOKIEFILE, $this->config['cookie_file']);
-            curl_setopt($ch, CURLOPT_COOKIEJAR, $this->config['cookie_file']);
-            curl_setopt($ch, CURLOPT_HEADERFUNCTION, [$this, 'headerCallback']);
-
-            curl_setopt($ch, CURLOPT_WRITEFUNCTION, [$this, 'bodyCallback']);
+            $options = [
+                CURLOPT_URL            => $url,
+                CURLOPT_FORBID_REUSE=>1,
+                CURLOPT_FRESH_CONNECT=>1,
+                CURLOPT_HTTPHEADER     => [
+                    'Referer: https://www.instagram.com',
+                ],
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_BUFFERSIZE=>$this->buffer_size,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_RETURNTRANSFER => 0,
+                CURLOPT_HEADER         => 0,
+                CURLOPT_USERAGENT      => $this->_config['user-agent'],
+                CURLOPT_HEADERFUNCTION=>[$this, 'headerCallback'],
+                CURLOPT_WRITEFUNCTION=>[$this, 'bodyCallback'],                
+            ];
+            curl_setopt_array($ch, $options);
 
             $ret = curl_exec($ch);
             curl_close($ch);

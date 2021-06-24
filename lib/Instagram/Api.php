@@ -39,7 +39,7 @@ if (!\class_exists('\Sovit\Instagram\Api')) {
             "postCommentsQueryId" => "bc3296d1ce80a24b1b6e40b1e72903f5",
             "hashtagPostsQueryId" => "bd33792e9f52a56ae8fa0985521d141d",
             "profilePostsQueryId" => "02e14f6a7812a876f7d133c9555b1151",
-            "postQueryId" => "80d30106288209e3a17722b5f58010f7",
+            "postQueryId" => "3eb224d64759a46f7083d3322a2458bd",
         ];
         /**
          * Default Config
@@ -87,8 +87,8 @@ if (!\class_exists('\Sovit\Instagram\Api')) {
                 }
             }
             $tag = urlencode($tag);
-            $result = $this->remote_call(self::API_BASE . "explore/tags/{$tag}?__a=1");
-            if (isset($result->graphql->hashtag)) {
+            $result = $this->remote_call(self::API_BASE . "explore/tags/{$tag}/?__a=1");
+            if (isset($result->data)) {
                 if ($this->cacheEnabled) {
                     $this->cacheEngine->set($cacheKey, $result, $this->_config['cache-timeout']);
                 }
