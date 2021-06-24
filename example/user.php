@@ -1,6 +1,7 @@
 <?php
 header("Content-Type: application/json");
-include __DIR__ . "/../vendor/autoload.php";
-$api = new \Sovit\Instagram\Api();
+$session=require("./session.php");
+include __DIR__."/../vendor/autoload.php";
+$api = new \Sovit\Instagram\Api(["sessionid"=>$session]);
 $result = $api->getUser("natgeo");
 echo json_encode($result, JSON_PRETTY_PRINT);
